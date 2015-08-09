@@ -1,0 +1,21 @@
+{
+    "name": "b-viguier/web-lan",
+    "description": "Tiny server app to dispatch socket messages between web browsers",
+    "type": "project",
+    "require": {
+        "cboden/ratchet": "^0.3.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benoit Viguier",
+            "email": "benoit.viguier@elao.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bviguier\\WebLan\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
