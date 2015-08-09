@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebLan</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <input id="message" type="text" placeholder="Message" class="form-control">
+    <button id="send" type="button" class="btn btn-primary">Send</button>
+
+    <textarea id="logs" readonly="true" class="form-control">
+    </textarea>
+
+</div>
+
+<script type="application/javascript">
+    $(function() {
+        var sendButton = $('#send');
+        var messageTxt = $('#message');
+        var logsArea   = $('#logs');
+
+        var conn = new WebSocket('ws://localhost:8080');
+
+        conn.onopen = function(e) {
+            logsArea.prepend("Connection established!");
+        };
+
+        conn.onmessage = function(e) {
+            logsArea.prepend(e.data + '\n');
+        };
+
+        sendButton.click( function() {
+            conn.send(messageTxt.val());
+        });
+    });
+</script>
+
+</body>
+</html>
