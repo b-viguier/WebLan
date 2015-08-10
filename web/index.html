@@ -13,6 +13,7 @@
 <div class="container">
 
     <input id="message" type="text" placeholder="Message" class="form-control">
+    <input id="receiver" type="text" placeholder="Receiver" class="form-control" value="@all">
     <button id="send" type="button" class="btn btn-primary">Send</button>
 
     <textarea id="logs" readonly="true" class="form-control">
@@ -24,6 +25,7 @@
     $(function() {
         var sendButton = $('#send');
         var messageTxt = $('#message');
+        var receiverTxt= $('#receiver');
         var logsArea   = $('#logs');
 
         var conn = new WebSocket('ws://localhost:8080');
@@ -37,7 +39,15 @@
         };
 
         sendButton.click( function() {
-            conn.send(messageTxt.val());
+            conn.send( JSON.stringify({
+                "header": {
+                    "receiver": receiverTxt.val(),
+                    "type": "MSG"
+                },
+                "body": {
+                    "content": messageTxt.val()
+                }
+            }));
         });
     });
 </script>
