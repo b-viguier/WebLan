@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebLan - Motion</title>
+
+    <script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
+    <script src="https://code.createjs.com/tweenjs-0.6.1.min.js"></script>
+
+    <script>
+        function init() {
+
+            var canvas = document.getElementById("mainCanvas");
+            var stage = new createjs.Stage(canvas);
+
+            var circle = new createjs.Shape();
+            circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+
+            circle.x = Math.random() * canvas.width;
+            circle.y = Math.random() * canvas.height;
+            circle.velX = Math.random() * 10 + 5;
+            circle.velY = Math.random() * 10 + 5;
+
+            stage.addChild(circle);
+
+            createjs.Ticker.timingMode = createjs.Ticker.RAF;
+            createjs.Ticker.addEventListener("tick", tick);
+
+            createjs.Ticker.setFPS(60);
+
+            function tick(event) {
+
+                circle.x = circle.x + circle.velX;
+                circle.y = circle.y + circle.velY;
+
+
+                if( circle.x < 0) {
+                    circle.velX = - circle.velX;
+                    circle.x = - circle.x;
+                } else if(circle.x > canvas.width ) {
+                    circle.velX = -circle.velX;
+                    circle.x = 2*canvas.width - circle.x;
+                }
+                if( circle.y < 0) {
+                    circle.velY = - circle.velY;
+                    circle.y = - circle.y;
+                } else if(circle.y > canvas.height ) {
+                    circle.velY = -circle.velY;
+                    circle.y = 2*canvas.height - circle.y;
+                }
+
+                stage.update(event);
+            }
+        }
+
+
+    </script>
+
+</head>
+<body onload="init();">
+    <canvas id="mainCanvas" width="1000" height="500"></canvas>
+</body>
+</html>
