@@ -21,12 +21,26 @@ class Server implements MessageComponentInterface
 
     public function onOpen(ConnectionInterface $conn)
     {
+        $others = [];
+        foreach($this->clients as $client) {
+            $others[] = $client->resourceId;
+        }
         $this->clients->attach($conn);
+
+        $event = (new BaseEvent)
+            ->setReceiver($conn->resourceId)
+            ->setType('OTHERS')
+            ->setData([
+                'you'    => $conn->resourceId,
+                'others' => $others,
+            ])
+        ;
+        $this->send($event);
+
         $event = (new BaseEvent)
             ->setSender($conn->resourceId)
             ->setType('CONNECT')
         ;
-
         $this->send($event);
     }
 
