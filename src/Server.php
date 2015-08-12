@@ -35,13 +35,13 @@ class Server implements MessageComponentInterface
                 'others' => $others,
             ])
         ;
-        $this->send($event);
+        $this->send($event, true);
 
         $event = (new BaseEvent)
             ->setSender($conn->resourceId)
             ->setType('CONNECT')
         ;
-        $this->send($event);
+        $this->send($event, true);
     }
 
     public function onMessage(ConnectionInterface $from, $msg)
@@ -62,7 +62,7 @@ class Server implements MessageComponentInterface
             ->setType('DISCONNECT')
         ;
 
-        $this->send($event);
+        $this->send($event, true);
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e)
@@ -72,7 +72,7 @@ class Server implements MessageComponentInterface
         $conn->close();
     }
 
-    public function send(EventInterface $event)
+    public function send(EventInterface $event, $log = false)
     {
         $senderId   = $event->getSender();
         $receiverId = $event->getReceiver();
@@ -92,7 +92,9 @@ class Server implements MessageComponentInterface
             if ($client->resourceId == $senderId) {
                 continue;
             }
-            printf("%s \t=> %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType());
+            if($log) {
+                printf("%s \t=> %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType());
+            }
             $client->send($jsonMsg);
         }
 
