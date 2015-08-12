@@ -10,6 +10,8 @@
     <script>
         function init() {
 
+            var conn = new WebSocket('ws://localhost:8080');
+
             var canvas = document.getElementById("mainCanvas");
             var stage = new createjs.Stage(canvas);
 
@@ -27,6 +29,34 @@
             createjs.Ticker.addEventListener("tick", tick);
 
             createjs.Ticker.setFPS(60);
+
+            var otherCircles = {};
+
+            conn.onmessage = function(e) {
+
+                var data = JSON.parse(e.data);
+                if(data.header.type == 'CONNECT') {
+                    createOtherCircle(data.header.sender);
+                } else if (data.header.type == 'OTHERS') {
+                    for(var index = 0, length = data.body.others.length; index < length; ++index) {
+                        createOtherCircle(data.body.others[index]);
+                    }
+                } else if (data.header.type == 'POSITION') {
+                    var other = otherCircles[data.header.sender];
+                    other.x = data.body.x;
+                    other.y = data.body.y;
+                    other.velX = data.body.velX;
+                    other.velY = data.body.velY;
+                }
+
+                function createOtherCircle(id) {
+                    var newCircle = new createjs.Shape();
+                    newCircle.graphics.beginFill("Red").drawCircle(0, 0, 50);
+                    otherCircles[id] = newCircle;
+                    stage.addChild(newCircle);
+                }
+                //TODO: manage DISCONNECTED
+            };
 
             function tick(event) {
 
@@ -48,6 +78,20 @@
                     circle.velY = -circle.velY;
                     circle.y = 2*canvas.height - circle.y;
                 }
+
+                //Send new position
+                conn.send( JSON.stringify({
+                    "header": {
+                        "type": "POSITION",
+                        "receiver": "@all"
+                    },
+                    "body": {
+                        "x": circle.x,
+                        "y": circle.y,
+                        "velX": circle.velX,
+                        "velY": circle.velY
+                    }
+                }));
 
                 stage.update(event);
             }
