@@ -1,7 +1,11 @@
-function WebLanClient(host, port) {
-    this.id         = undefined;
-    this.callbacks  = {};
-    this.socket     = new WebSocket('ws://' + host + ':' + port);
+function WebLanClient() {
+    this.id = undefined;
+    this.callbacks = {};
+    this.socket = undefined;
+}
+
+WebLanClient.prototype.connect = function(host, port) {
+    this.socket = new WebSocket('ws://' + host + ':' + port);
     var that = this;
 
     this.socket.onmessage = function(messageEvent) {
@@ -18,7 +22,7 @@ function WebLanClient(host, port) {
             }
         }
     }
-}
+};
 
 WebLanClient.prototype.send = function (jsonData, type, receiver) {
     this.socket.send(

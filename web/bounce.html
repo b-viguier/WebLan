@@ -6,11 +6,13 @@
 
     <script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
     <script src="https://code.createjs.com/tweenjs-0.6.1.min.js"></script>
+    <script src="./js/WebLanClient.js"></script>
 
     <script>
         function init() {
 
-            var conn = new WebSocket('ws://localhost:8080');
+            var client = new WebLanClient();
+            client.connect('localhost', 8080);
 
             var canvas = document.getElementById("mainCanvas");
             var stage = new createjs.Stage(canvas);
@@ -32,31 +34,34 @@
 
             var otherCircles = {};
 
-            conn.onmessage = function(e) {
+            client.onEvent('CONNECT', function(e, s) {
+                createOtherCircle(s);
+            });
 
-                var data = JSON.parse(e.data);
-                if(data.header.type == 'CONNECT') {
-                    createOtherCircle(data.header.sender);
-                } else if (data.header.type == 'OTHERS') {
-                    for(var index = 0, length = data.body.others.length; index < length; ++index) {
-                        createOtherCircle(data.body.others[index]);
-                    }
-                } else if (data.header.type == 'POSITION') {
-                    var other = otherCircles[data.header.sender];
-                    other.x = data.body.x;
-                    other.y = data.body.y;
-                    other.velX = data.body.velX;
-                    other.velY = data.body.velY;
-                }
 
-                function createOtherCircle(id) {
-                    var newCircle = new createjs.Shape();
-                    newCircle.graphics.beginFill("Red").drawCircle(0, 0, 50);
-                    otherCircles[id] = newCircle;
-                    stage.addChild(newCircle);
+            client.onEvent('OTHERS', function(e, s) {
+                for (var index = 0, length = e.others.length; index < length; ++index) {
+                    createOtherCircle(e.others[index]);
                 }
-                //TODO: manage DISCONNECTED
-            };
+            });
+
+
+            client.onEvent('POSITION', function(e, s) {
+                var other = otherCircles[s];
+                other.x = e.x;
+                other.y = e.y;
+                other.velX = e.velX;
+                other.velY = e.velY;
+            });
+
+            //TODO: manage DISCONNECTED
+
+            function createOtherCircle(id) {
+                var newCircle = new createjs.Shape();
+                newCircle.graphics.beginFill("Red").drawCircle(0, 0, 50);
+                otherCircles[id] = newCircle;
+                stage.addChild(newCircle);
+            }
 
             function tick(event) {
 
@@ -80,18 +85,16 @@
                 }
 
                 //Send new position
-                conn.send( JSON.stringify({
-                    "header": {
-                        "type": "POSITION",
-                        "receiver": "@all"
-                    },
-                    "body": {
-                        "x": circle.x,
-                        "y": circle.y,
-                        "velX": circle.velX,
-                        "velY": circle.velY
-                    }
-                }));
+                client.send(
+                        {
+                            "x": circle.x,
+                            "y": circle.y,
+                            "velX": circle.velX,
+                            "velY": circle.velY
+                        },
+                        "POSITION",
+                        "@all"
+                );
 
                 stage.update(event);
             }

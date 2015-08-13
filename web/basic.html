@@ -29,7 +29,8 @@
         var receiverTxt= $('#receiver');
         var logsArea   = $('#logs');
 
-        var client = new WebLanClient('localhost',8080);
+        var client = new WebLanClient();
+        client.connect('localhost', 8080);
 
         client.onEvent('MSG', function(e, s) {
             logsArea.prepend('[' + s + ']' +e.content + '\n');
