@@ -3,7 +3,8 @@
     "description": "Tiny server app to dispatch socket messages between web browsers",
     "type": "project",
     "require": {
-        "cboden/ratchet": "^0.3.3"
+        "cboden/ratchet": "^0.3.3",
+        "symfony/console": "^2.7"
     },
     "license": "MIT",
     "authors": [
