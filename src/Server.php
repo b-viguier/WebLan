@@ -88,12 +88,13 @@ class Server implements MessageComponentInterface
                     }
                 );
 
+        if($log) {
+            printf("%s \t=> %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType());
+        };
+
         foreach ($receivers as $client) {
             if ($client->resourceId == $senderId) {
                 continue;
-            }
-            if($log) {
-                printf("%s \t=> %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType());
             }
             $client->send($jsonMsg);
         }
