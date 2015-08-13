@@ -5,12 +5,12 @@
     <title>WebLan</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="./js/WebLanClient.js"></script>
-
+    <script src="./js/jquery.wlancontrols.js"></script>
+    <link rel="stylesheet" href="css/wlancontrols.css" />
 </head>
 <body>
-
 <div class="container">
 
     <input id="message" type="text" placeholder="Message" class="form-control">
@@ -24,13 +24,18 @@
 
 <script type="application/javascript">
     $(function() {
+
+        $('body').wlancontrols();
+        $('#wlancontrols-opener').click(function(){
+            $("#wlancontrols__container").toggleClass('open');
+        });
+
         var sendButton = $('#send');
         var messageTxt = $('#message');
         var receiverTxt= $('#receiver');
         var logsArea   = $('#logs');
 
         var client = new WebLanClient();
-        client.connect('localhost', 8080);
 
         client.onEvent('MSG', function(e, s) {
             logsArea.prepend('[' + s + ']' +e.content + '\n');
@@ -38,6 +43,10 @@
 
         sendButton.click( function() {
             client.send({"content": messageTxt.val()}, 'MSG', receiverTxt.val());
+        });
+
+        $("#connect").click(function(){
+            client.connect($('#server').val(), $('#port').val());
         });
     });
 </script>

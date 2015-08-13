@@ -1,0 +1,29 @@
+@darkColor: #999;
+@clearColor: #eee;
+
+#wlancontrols__container {
+  width:100%;
+  position:fixed;
+  top:-49px;
+  transition: top 0.5s;
+  &.open {top:0;}
+  .info{
+    height:50px;
+    background-color: #fff;
+    top:0;
+    right:0;
+    border-bottom:1px solid @darkColor;
+    padding:3px;
+  }
+  .controlbar{
+    position:absolute;
+    left:50px;
+    background-color: @clearColor;
+    color:@darkColor;
+    padding:2px 5px;
+    border-radius: 0 0 5px 5px;
+    border:1px solid @darkColor;
+    border-top:0;
+    cursor:pointer;
+  }
+}
