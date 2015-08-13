@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+// app/console
+include __DIR__ . '/../vendor/autoload.php';
+
+use Bviguier\WebLan\Command\LaunchServerCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new LaunchServerCommand);
+$application->run();
