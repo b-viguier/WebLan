@@ -2,7 +2,7 @@
 
 namespace Bviguier\WebLan\Events;
 
-class BaseEvent implements EventInterface
+class BaseEvent extends AbstractEvent
 {
 
     /**
@@ -10,11 +10,7 @@ class BaseEvent implements EventInterface
      */
     private $sender = 0;
 
-    /**
-     * @var string
-     */
-    private $receiver = EventInterface::ALL_RECEIVERS;
-
+    private $header;
     /**
      * @var string
      */
@@ -23,7 +19,7 @@ class BaseEvent implements EventInterface
     /**
      * @var array
      */
-    private $data = [];
+    private $data;
 
     /**
      * @inheritdoc
@@ -49,18 +45,7 @@ class BaseEvent implements EventInterface
      */
     public function getReceiver()
     {
-        return $this->receiver;
-    }
-
-    /**
-     * @param string $receiver
-     * @return BaseEvent
-     */
-    public function setReceiver($receiver)
-    {
-        $this->receiver = $receiver;
-
-        return $this;
+        return $this->header['receiver'];
     }
 
     /**
@@ -68,54 +53,7 @@ class BaseEvent implements EventInterface
      */
     public function getType()
     {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     * @return BaseEvent
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param array $data
-     * @return BaseEvent
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getJson()
-    {
-        return json_encode(
-            [
-                'header' => [
-                    'sender'   => $this->getSender(),
-                    'receiver' => $this->getReceiver(),
-                    'type'     => $this->getType(),
-                ],
-                'body'   => $this->getData(),
-            ]
-        );
+        return $this->header['type'];
     }
 
     /**
@@ -126,23 +64,34 @@ class BaseEvent implements EventInterface
      */
     public function fromJson($json)
     {
-        $json = json_decode($json, true);
-        if (!isset($json['header'])) {
+        list($header, $body) = explode('#', $json, 2);
+        $header = json_decode($header, true);
+        if (!isset($header)) {
             throw new \Exception('Missing header section in Json message');
         }
-        $header = $json['header'];
         foreach (['receiver', 'type'] as $prop) {
             if (!isset($header[$prop])) {
                 throw new \Exception("Missing header property [$prop]");
             }
-            $method = "set$prop";
-            $this->$method($header[$prop]);
         }
+        $this->header = $header;
 
-        if (isset($json['body']) && is_array($json['body'])) {
-            $this->setData($json['body']);
-        }
+        $this->data = $body;
 
         return $this;
+    }
+
+    public function getJson()
+    {
+        return implode(
+            '#',
+            [
+                json_encode([
+                    'sender'   => $this->getSender(),
+                    'receiver' => $this->getReceiver(),
+                    'type'     => $this->getType(),
+                ]),
+                $this->data
+            ]);
     }
 }

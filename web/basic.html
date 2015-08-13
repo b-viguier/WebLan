@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="./js/WebLanClient.js"></script>
 
 </head>
 <body>
@@ -28,26 +29,15 @@
         var receiverTxt= $('#receiver');
         var logsArea   = $('#logs');
 
-        var conn = new WebSocket('ws://localhost:8080');
+        var client = new WebLanClient();
+        client.connect('localhost', 8080);
 
-        conn.onopen = function(e) {
-            logsArea.prepend("Connection established!");
-        };
-
-        conn.onmessage = function(e) {
-            logsArea.prepend(e.data + '\n');
-        };
+        client.onEvent('MSG', function(e, s) {
+            logsArea.prepend('[' + s + ']' +e.content + '\n');
+        });
 
         sendButton.click( function() {
-            conn.send( JSON.stringify({
-                "header": {
-                    "receiver": receiverTxt.val(),
-                    "type": "MSG"
-                },
-                "body": {
-                    "content": messageTxt.val()
-                }
-            }));
+            client.send({"content": messageTxt.val()}, 'MSG', receiverTxt.val());
         });
     });
 </script>

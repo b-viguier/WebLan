@@ -4,6 +4,7 @@ namespace Bviguier\WebLan;
 
 use Bviguier\WebLan\Events\BaseEvent;
 use Bviguier\WebLan\Events\EventInterface;
+use Bviguier\WebLan\Events\SystemEvent;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 
@@ -27,7 +28,7 @@ class Server implements MessageComponentInterface
         }
         $this->clients->attach($conn);
 
-        $event = (new BaseEvent)
+        $event = (new SystemEvent)
             ->setReceiver($conn->resourceId)
             ->setType('OTHERS')
             ->setData([
@@ -37,7 +38,7 @@ class Server implements MessageComponentInterface
         ;
         $this->send($event, true);
 
-        $event = (new BaseEvent)
+        $event = (new SystemEvent)
             ->setSender($conn->resourceId)
             ->setType('CONNECT')
         ;
@@ -57,7 +58,7 @@ class Server implements MessageComponentInterface
     {
         $this->clients->detach($conn);
 
-        $event = (new BaseEvent)
+        $event = (new SystemEvent)
             ->setSender($conn->resourceId)
             ->setType('DISCONNECT')
         ;
@@ -89,7 +90,7 @@ class Server implements MessageComponentInterface
                 );
 
         if($log) {
-            printf("%s \t=> %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType());
+            printf("%s \t=> %s\t %s\t %s\n", $event->getSender(), $event->getReceiver(), $event->getType(), $event->getJson());
         };
 
         foreach ($receivers as $client) {
