@@ -9,7 +9,7 @@ composer install
 
 ## How to launch
 ```shell
-php ./bin/server.php
+app/console weblan:launch [-p port_number]
 ```
 
 ## How to develop an application using WebLan
