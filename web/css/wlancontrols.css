@@ -1,13 +1,13 @@
-#wlancontrols__container {
+.wlancontrols__container {
   width: 100%;
   position: fixed;
   top: -49px;
   transition: top 0.5s;
 }
-#wlancontrols__container.open {
+.wlancontrols__container.open {
   top: 0;
 }
-#wlancontrols__container .info {
+.wlancontrols__container .info {
   height: 50px;
   background-color: #fff;
   top: 0;
@@ -15,7 +15,7 @@
   border-bottom: 1px solid #999999;
   padding: 3px;
 }
-#wlancontrols__container .controlbar {
+.wlancontrols__container .controlbar {
   position: absolute;
   left: 50px;
   background-color: #eeeeee;

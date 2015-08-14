@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/wlancontrols.css" />
 </head>
 <body>
+<div id="connect-widget"></div>
 <div class="container">
 
     <input id="message" type="text" placeholder="Message" class="form-control">
@@ -24,11 +25,6 @@
 
 <script type="application/javascript">
     $(function() {
-
-        $('body').wlancontrols();
-        $('#wlancontrols-opener').click(function(){
-            $("#wlancontrols__container").toggleClass('open');
-        });
 
         var sendButton = $('#send');
         var messageTxt = $('#message');
@@ -45,8 +41,13 @@
             client.send({"content": messageTxt.val()}, 'MSG', receiverTxt.val());
         });
 
-        $("#connect").click(function(){
-            client.connect($('#server').val(), $('#port').val());
+        var panel = $('#connect-widget').wlancontrols({
+            onConnect: function(){
+                client.connect(panel.serverVal(), panel.portVal());
+            },
+            onDisconnect: function() {
+                client.close();
+            }
         });
     });
 </script>
