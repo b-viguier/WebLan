@@ -14,8 +14,6 @@ WebLanClient.prototype.connect = function(host, port) {
         var header     = JSON.parse(messageEvent.data.substring(0, splitIndex));
 
         if (that.callbacks[header.type]) {
-            console.log(messageEvent);
-
             var body = JSON.parse(messageEvent.data.substring(splitIndex + 1));
             for (var index in that.callbacks[header.type]) {
                 that.callbacks[header.type][index](body, header.sender);
