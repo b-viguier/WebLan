@@ -6,13 +6,17 @@
 
     <script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
     <script src="https://code.createjs.com/tweenjs-0.6.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="./js/WebLanClient.js"></script>
+    <script src="./js/jquery.wlancontrols.js"></script>
+    <link rel="stylesheet" href="css/wlancontrols.css" />
 
     <script>
         function init() {
 
             var client = new WebLanClient();
-            client.connect('localhost', 8080);
+            $('#connect-widget').wlancontrols(client);
 
             var canvas = document.getElementById("mainCanvas");
             var stage = new createjs.Stage(canvas);
@@ -105,6 +109,7 @@
 
 </head>
 <body onload="init();">
+    <div id="connect-widget"></div>
     <canvas id="mainCanvas" width="1000" height="500"></canvas>
 </body>
 </html>
