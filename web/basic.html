@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="./js/WebLanClient.js"></script>
-    <script src="./js/jquery.wlancontrols.js"></script>
-    <link rel="stylesheet" href="css/wlancontrols.css" />
+    <script src="js/jquery.WebLanGui.js"></script>
+    <link rel="stylesheet" href="css/WebLanGui.css" />
 </head>
 <body>
 <div id="connect-widget"></div>
@@ -32,7 +32,7 @@
         var logsArea   = $('#logs');
 
         var client = new WebLanClient();
-        $('#connect-widget').wlancontrols(client);
+        $('#connect-widget').WLGConnection(client);
 
         client.onEvent('MSG', function(e, s) {
             logsArea.prepend('[' + s + '] ' +e.content + '\n');

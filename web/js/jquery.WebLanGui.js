@@ -1,4 +1,4 @@
-$.fn.wlancontrols = function(client){
+$.fn.WLGConnection = function(client){
 
     var container = $(this);
 
@@ -7,26 +7,26 @@ $.fn.wlancontrols = function(client){
         '<form class="form-inline">'+
             '<div class="form-group">'+
                 '<label for="server">Server</label> '+
-                '<input type="text" value="localhost" name="server" id="wlancontrols-server" /> '+
+                '<input type="text" value="localhost" name="server" id="WLGConnection-server" /> '+
                 '<label for="port">Port</label> '+
-                '<input type="text" name="port" value="8080" id="wlancontrols-port" /> '+
-                '<button type="button" class="btn btn-success"   id="wlancontrols-connect"    >Connect</button> '+
-                '<button type="button" class="btn btn-danger"    id="wlancontrols-disconnect" disabled="disabled">Disconnect</button>'+
+                '<input type="text" name="port" value="8080" id="WLGConnection-port" /> '+
+                '<button type="button" class="btn btn-success"   id="WLGConnection-connect"    >Connect</button> '+
+                '<button type="button" class="btn btn-danger"    id="WLGConnection-disconnect" disabled="disabled">Disconnect</button>'+
             '</div>'+
         '</form>'+
         '</div>'+
-        '<div class="controlbar"><i class="glyphicon glyphicon-th-list" id="wlancontrols-opener"></i></div>'
+        '<div class="controlbar"><i class="glyphicon glyphicon-th-list" id="WLGConnection-opener"></i></div>'
     );
-    container.toggleClass('wlancontrols__container', true);
+    container.toggleClass('WGLConnection-container', true);
     container.toggleClass('open', true);
 
-    var connectButton      = $('#wlancontrols-connect', container),
-        disconnectButton   = $('#wlancontrols-disconnect', container),
-        serverTxt          = $('#wlancontrols-server', container),
-        portTxt            = $('#wlancontrols-port', container);
+    var connectButton      = $('#WLGConnection-connect', container),
+        disconnectButton   = $('#WLGConnection-disconnect', container),
+        serverTxt          = $('#WLGConnection-server', container),
+        portTxt            = $('#WLGConnection-port', container);
 
     //Opener callback
-    $('#wlancontrols-opener', container).click(function(){
+    $('#WLGConnection-opener', container).click(function(){
         container.toggleClass('open');
     });
 
@@ -45,7 +45,6 @@ $.fn.wlancontrols = function(client){
     //On disconnect
     disconnectButton.click(function() {
         client.close();
-        console.log('close');
 
         serverTxt.prop('disabled', true);
         portTxt.prop('disabled', true);
