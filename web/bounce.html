@@ -38,12 +38,12 @@
 
             var otherCircles = {};
 
-            client.onEvent('CONNECT', function(e, s) {
+            client.onEvent('WEBLAN:CONNECT', function(e, s) {
                 createOtherCircle(s);
             });
 
 
-            client.onEvent('OTHERS', function(e, s) {
+            client.onEvent('WEBLAN:OTHERS', function(e, s) {
                 for (var index = 0, length = e.others.length; index < length; ++index) {
                     createOtherCircle(e.others[index]);
                 }
@@ -58,7 +58,7 @@
                 other.velY = e.velY;
             });
 
-            //TODO: manage DISCONNECTED
+            //TODO: manage WEBLAN:DISCONNECT
 
             function createOtherCircle(id) {
                 var newCircle = new createjs.Shape();

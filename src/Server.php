@@ -30,7 +30,7 @@ class Server implements MessageComponentInterface
 
         $event = (new SystemEvent)
             ->setReceiver($conn->resourceId)
-            ->setType('OTHERS')
+            ->setType('WEBLAN:OTHERS')
             ->setData([
                 'you'    => $conn->resourceId,
                 'others' => $others,
@@ -40,7 +40,7 @@ class Server implements MessageComponentInterface
 
         $event = (new SystemEvent)
             ->setSender($conn->resourceId)
-            ->setType('CONNECT')
+            ->setType('WEBLAN:CONNECT')
         ;
         $this->send($event, true);
     }
@@ -60,7 +60,7 @@ class Server implements MessageComponentInterface
 
         $event = (new SystemEvent)
             ->setSender($conn->resourceId)
-            ->setType('DISCONNECT')
+            ->setType('WEBLAN:DISCONNECT')
         ;
 
         $this->send($event, true);
