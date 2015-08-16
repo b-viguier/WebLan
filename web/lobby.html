@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lobby</title>
+
+    <script src="https://code.createjs.com/easeljs-0.8.1.min.js"></script>
+    <script src="https://code.createjs.com/tweenjs-0.6.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="./js/WebLanClient.js"></script>
+    <script src="js/jquery.WebLanGui.js"></script>
+    <link rel="stylesheet" href="css/WebLanGui.css" />
+</head>
+<body>
+<div id="connect-widget"></div>
+<div class="container">
+
+    <h1>Lobby</h1>
+    <div class="row">
+        <div id="lobby-widget">
+        </div>
+    </div>
+
+</div>
+
+<script type="application/javascript">
+    $(function() {
+
+        var client = new WebLanClient();
+        $('#connect-widget').WLGConnection(client);
+        $('#lobby-widget').WLGLobby(client);
+
+    });
+</script>
+</body>
+</html>

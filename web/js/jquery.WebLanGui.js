@@ -54,3 +54,32 @@ $.fn.WLGConnection = function(client){
 
     return this;
 };
+
+$.fn.WLGLobby = function(client){
+    var container = $(this);
+    container.html(
+        '<table id="lobby" class="table table-striped">' +
+            '<tr id="titles"><th>Id</th><th>Name</th><th>Ready?</th></tr>' +
+        '</table>'
+    );
+
+    client
+        .onEvent('WEBLAN:OTHERS', refreshLobby)
+        .onEvent('WEBLAN:CONNECT', refreshLobby)
+        .onEvent('WEBLAN:DISCONNECT', refreshLobby)
+    ;
+
+    var lobby = $('#lobby', container);
+    function refreshLobby() {
+        $('tr',lobby).remove(':not(#titles)');
+        insertLobbyUser(client.id, 'success');
+        client.others.forEach(insertLobbyUser);
+    }
+    function insertLobbyUser(id, extraClass) {
+        lobby.append(
+            '<tr class="' + extraClass + '"><td>' + id + '</td></tr>'
+        );
+    }
+
+    return this;
+};
