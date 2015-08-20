@@ -56,7 +56,7 @@ WebLanClient.prototype.close = function () {
     this.socket.close();
 };
 
-WebLanClient.prototype.onEvent = function(type, callback) {
+WebLanClient.prototype.on = function(type, callback) {
     this.callbacks[type] = this.callbacks[type] || [];
     this.callbacks[type].push(callback);
     return this;

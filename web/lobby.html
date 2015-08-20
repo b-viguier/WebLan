@@ -37,7 +37,7 @@
             onServerStart: function() {message.html('Server Started!');}
         });
 
-        client.onEvent('LOBBY:START', function() {message.html('Client Started!');})
+        client.on('LOBBY:START', function() {message.html('Client Started!');})
     });
 </script>
 </body>

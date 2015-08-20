@@ -34,7 +34,7 @@
         var client = new WebLanClient();
         $('#connect-widget').WLGConnection(client);
 
-        client.onEvent('MSG', function(e, s) {
+        client.on('MSG', function(e, s) {
             logsArea.prepend('[' + s + '] ' +e.content + '\n');
         });
 

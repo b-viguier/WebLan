@@ -37,12 +37,12 @@
 
             var otherCircles = {};
 
-            client.onEvent('WEBLAN:CONNECT', function(e, s) {
+            client.on('WEBLAN:CONNECT', function(e, s) {
                 createOtherCircle(s);
             });
 
 
-            client.onEvent('WEBLAN:OTHERS', function(e, s) {
+            client.on('WEBLAN:OTHERS', function(e, s) {
                 createjs.Ticker.addEventListener("tick", tick);
                 for (var index = 0, length = e.others.length; index < length; ++index) {
                     createOtherCircle(e.others[index]);
@@ -50,7 +50,7 @@
             });
 
 
-            client.onEvent('POSITION', function(e, s) {
+            client.on('POSITION', function(e, s) {
                 var other = otherCircles[s];
                 other.x = e.x;
                 other.y = e.y;

@@ -72,7 +72,7 @@ $.fn.WLGLobby = function(client, options){
     );
 
     client
-        .onEvent('WEBLAN:OTHERS', function(body) {
+        .on('WEBLAN:OTHERS', function(body) {
             if(body.others.length == 0) {
                 lobby.serverId = client.id;
                 container.append('<button id="WLGLobby-start" type="button" class="btn btn-success">Start!</button>');
@@ -83,14 +83,14 @@ $.fn.WLGLobby = function(client, options){
             }
             refreshLobby();
         })
-        .onEvent('WEBLAN:CONNECT', function(body, senderId) {
+        .on('WEBLAN:CONNECT', function(body, senderId) {
             if(lobby.isServer()) {
                 client.send({}, 'LOBBY:SERVER_ID', senderId);
             }
             refreshLobby();
         })
-        .onEvent('WEBLAN:DISCONNECT', refreshLobby)
-        .onEvent('LOBBY:SERVER_ID', function(body, sender) {
+        .on('WEBLAN:DISCONNECT', refreshLobby)
+        .on('LOBBY:SERVER_ID', function(body, sender) {
             lobby.serverId = sender;
             refreshLobby();
         })
