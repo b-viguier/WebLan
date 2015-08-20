@@ -21,16 +21,23 @@
         <div id="lobby-widget">
         </div>
     </div>
+    <div id="Message" class="row">
+        Waiting
+    </div>
 
 </div>
 
 <script type="application/javascript">
     $(function() {
 
+        var message = $('#Message');
         var client = new WebLanClient();
         $('#connect-widget').WLGConnection(client);
-        $('#lobby-widget').WLGLobby(client);
+        $('#lobby-widget').WLGLobby(client, {
+            onServerStart: function() {message.html('Server Started!');}
+        });
 
+        client.onEvent('LOBBY:START', function() {message.html('Client Started!');})
     });
 </script>
 </body>

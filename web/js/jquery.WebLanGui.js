@@ -55,7 +55,15 @@ $.fn.WLGConnection = function(client){
     return this;
 };
 
-$.fn.WLGLobby = function(client){
+$.fn.WLGLobby = function(client, options){
+    this.serverId = undefined;
+    var lobby = this;
+    options = $.extend({}, $.fn.WLGLobby.defaults, options);
+
+    this.isServer = function() {
+        return lobby.serverId === client.id;
+    };
+
     var container = $(this);
     container.html(
         '<table id="lobby" class="table table-striped">' +
@@ -64,22 +72,49 @@ $.fn.WLGLobby = function(client){
     );
 
     client
-        .onEvent('WEBLAN:OTHERS', refreshLobby)
-        .onEvent('WEBLAN:CONNECT', refreshLobby)
+        .onEvent('WEBLAN:OTHERS', function(body) {
+            if(body.others.length == 0) {
+                lobby.serverId = client.id;
+                container.append('<button id="WLGLobby-start" type="button" class="btn btn-success">Start!</button>');
+                $('#WLGLobby-start', container).click(function() {
+                    client.send({}, 'LOBBY:START', '@all');
+                    options.onServerStart();
+                });
+            }
+            refreshLobby();
+        })
+        .onEvent('WEBLAN:CONNECT', function(body, senderId) {
+            if(lobby.isServer()) {
+                client.send({}, 'LOBBY:SERVER_ID', senderId);
+            }
+            refreshLobby();
+        })
         .onEvent('WEBLAN:DISCONNECT', refreshLobby)
+        .onEvent('LOBBY:SERVER_ID', function(body, sender) {
+            lobby.serverId = sender;
+            refreshLobby();
+        })
     ;
 
-    var lobby = $('#lobby', container);
+    var lobbyTable = $('#lobby', container);
     function refreshLobby() {
-        $('tr',lobby).remove(':not(#titles)');
+        $('tr',lobbyTable).remove(':not(#titles)');
         insertLobbyUser(client.id, 'success');
         client.others.forEach(insertLobbyUser);
     }
     function insertLobbyUser(id, extraClass) {
-        lobby.append(
+        if(id == lobby.serverId) {
+            extraClass = 'danger';
+        }
+        lobbyTable.append(
             '<tr class="' + extraClass + '"><td>' + id + '</td></tr>'
         );
     }
 
+
     return this;
+};
+
+$.fn.WLGLobby.defaults = {
+    onServerStart : function() {}
 };
