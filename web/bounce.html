@@ -32,7 +32,6 @@
             stage.addChild(circle);
 
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
-            createjs.Ticker.addEventListener("tick", tick);
 
             createjs.Ticker.setFPS(60);
 
@@ -44,6 +43,7 @@
 
 
             client.onEvent('WEBLAN:OTHERS', function(e, s) {
+                createjs.Ticker.addEventListener("tick", tick);
                 for (var index = 0, length = e.others.length; index < length; ++index) {
                     createOtherCircle(e.others[index]);
                 }
