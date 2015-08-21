@@ -4,6 +4,7 @@ WebLan is a tiny server-side script to connect several browser sockets together.
 
 ## How to install
 ```shell
+git submodule update --init
 composer install
 ```
 
