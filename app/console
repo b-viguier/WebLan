@@ -3,7 +3,7 @@
 // app/console
 include __DIR__ . '/../vendor/autoload.php';
 
-use Bviguier\WebLan\Command\LaunchServerCommand;
+use Bveing\WebLan\Command\LaunchServerCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();

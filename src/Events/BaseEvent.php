@@ -1,6 +1,6 @@
 <?php
 
-namespace Bviguier\WebLan\Events;
+namespace Bveing\WebLan\Events;
 
 class BaseEvent extends AbstractEvent
 {

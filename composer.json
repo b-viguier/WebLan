@@ -15,7 +15,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bviguier\\WebLan\\": "src/"
+            "Bveing\\WebLan\\": "src/"
         }
     },
     "minimum-stability": "stable"

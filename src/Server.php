@@ -1,10 +1,10 @@
 <?php
 
-namespace Bviguier\WebLan;
+namespace Bveing\WebLan;
 
-use Bviguier\WebLan\Events\BaseEvent;
-use Bviguier\WebLan\Events\EventInterface;
-use Bviguier\WebLan\Events\SystemEvent;
+use Bveing\WebLan\Events\BaseEvent;
+use Bveing\WebLan\Events\EventInterface;
+use Bveing\WebLan\Events\SystemEvent;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 

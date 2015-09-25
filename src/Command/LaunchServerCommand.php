@@ -1,6 +1,6 @@
 <?php
 
-namespace Bviguier\WebLan\Command;
+namespace Bveing\WebLan\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
-use Bviguier\WebLan\Server;
+use Bveing\WebLan\Server;
 
 
 class LaunchServerCommand extends Command
