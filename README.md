@@ -1,6 +1,5 @@
 # WebLan
 WebLan is a tiny server-side script to connect several browser sockets together.
-**Still in active development.**
 
 ## How to install
 ```shell
